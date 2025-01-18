@@ -33,10 +33,13 @@ public class Evento {
     @JoinColumn(name = "ubicacion_id", nullable = false)
     private Ubicacion ubicacion;
 
+    @Enumerated(EnumType.STRING)
+    private CategoriaEvento categoria;
+
     public Evento() {
     }
 
-    public Evento( String titulo, String descripcion, LocalDate fechaInicio, LocalDate fechaFin, BigDecimal precio, String imagen, EstadoEvento estado, Ubicacion ubicacion) {
+    public Evento( String titulo, String descripcion, LocalDate fechaInicio, LocalDate fechaFin, BigDecimal precio, String imagen, EstadoEvento estado, Ubicacion ubicacion, CategoriaEvento categoria) {
 
         this.titulo = titulo;
         this.descripcion = descripcion;
@@ -46,9 +49,10 @@ public class Evento {
         this.imagen = imagen;
         this.estado = estado;
         this.ubicacion = ubicacion;
+        this.categoria = categoria;
     }
 
-    public Evento(String titulo, String descripcion, LocalDate fecha, Ubicacion ubicacion) {
+    public Evento(String titulo, String descripcion, LocalDate fechaInicio, Ubicacion ubicacion) {
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.fechaInicio = fechaInicio;
@@ -65,6 +69,14 @@ public class Evento {
 
     public String getTitulo() {
         return titulo;
+    }
+
+    public CategoriaEvento getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(CategoriaEvento categoria) {
+        this.categoria = categoria;
     }
 
     public void setTitulo(String titulo) {

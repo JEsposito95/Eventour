@@ -37,4 +37,6 @@ public class EventoController {
         Evento nuevoEvento= eventoService.crearEvento(eventoDTO);
         return ResponseEntity.ok(nuevoEvento);
     }
+
+    //AGREGAR LAS BUSQUEDAS PERSONALIZADAS POR NOMBRE POR EJ.
 }

@@ -65,7 +65,8 @@ public class EventoService {
                 eventoDTO.precio(),
                 eventoDTO.imagen(),
                 eventoDTO.estado(),
-                ubicacion
+                ubicacion,
+                eventoDTO.categoriaEvento()
         );
 
         return eventoRepository.save(evento);
@@ -124,7 +125,8 @@ public class EventoService {
                 evento.getPrecio(),
                 evento.getImagen(),
                 evento.getEstado(),
-                evento.getUbicacion().getId()
+                evento.getUbicacion().getId(),
+                evento.getCategoria()
         );
     }
 }
