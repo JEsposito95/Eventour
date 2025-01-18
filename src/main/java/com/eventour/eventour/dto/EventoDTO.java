@@ -1,5 +1,6 @@
 package com.eventour.eventour.dto;
 
+import com.eventour.eventour.model.CategoriaEvento;
 import com.eventour.eventour.model.Evento;
 
 import java.math.BigDecimal;
@@ -14,6 +15,8 @@ public record EventoDTO(
         BigDecimal precio,
         String imagen,
         Evento.EstadoEvento estado,
-        Long ubicacionId
+        Long ubicacionId,
+        CategoriaEvento categoriaEvento
+
 ) {
 }
