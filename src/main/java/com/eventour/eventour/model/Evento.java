@@ -3,6 +3,7 @@ package com.eventour.eventour.model;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -17,16 +18,46 @@ public class Evento {
     private String descripcion;
 
     @Column(name = "fecha_inicio")
-    private LocalDateTime fechaInicio;
+    private LocalDate fechaInicio;
 
     @Column(name = "fecha_fin")
-    private LocalDateTime fechaFin;
+    private LocalDate fechaFin;
 
     private BigDecimal precio;
     private String imagen;
 
     @Enumerated(EnumType.STRING)
     private EstadoEvento estado;
+
+    @ManyToOne
+    @JoinColumn(name = "ubicacion_id", nullable = false)
+    private Ubicacion ubicacion;
+
+    @Enumerated(EnumType.STRING)
+    private CategoriaEvento categoria;
+
+    public Evento() {
+    }
+
+    public Evento( String titulo, String descripcion, LocalDate fechaInicio, LocalDate fechaFin, BigDecimal precio, String imagen, EstadoEvento estado, Ubicacion ubicacion, CategoriaEvento categoria) {
+
+        this.titulo = titulo;
+        this.descripcion = descripcion;
+        this.fechaInicio = fechaInicio;
+        this.fechaFin = fechaFin;
+        this.precio = precio;
+        this.imagen = imagen;
+        this.estado = estado;
+        this.ubicacion = ubicacion;
+        this.categoria = categoria;
+    }
+
+    public Evento(String titulo, String descripcion, LocalDate fechaInicio, Ubicacion ubicacion) {
+        this.titulo = titulo;
+        this.descripcion = descripcion;
+        this.fechaInicio = fechaInicio;
+        this.ubicacion = ubicacion;
+    }
 
     public long getId() {
         return id;
@@ -38,6 +69,14 @@ public class Evento {
 
     public String getTitulo() {
         return titulo;
+    }
+
+    public CategoriaEvento getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(CategoriaEvento categoria) {
+        this.categoria = categoria;
     }
 
     public void setTitulo(String titulo) {
@@ -52,19 +91,19 @@ public class Evento {
         this.descripcion = descripcion;
     }
 
-    public LocalDateTime getFechaInicio() {
+    public LocalDate getFechaInicio() {
         return fechaInicio;
     }
 
-    public void setFechaInicio(LocalDateTime fechaInicio) {
+    public void setFechaInicio(LocalDate fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
 
-    public LocalDateTime getFechaFin() {
+    public LocalDate getFechaFin() {
         return fechaFin;
     }
 
-    public void setFechaFin(LocalDateTime fechaFin) {
+    public void setFechaFin(LocalDate fechaFin) {
         this.fechaFin = fechaFin;
     }
 
@@ -90,6 +129,14 @@ public class Evento {
 
     public void setEstado(EstadoEvento estado) {
         this.estado = estado;
+    }
+
+    public Ubicacion getUbicacion() {
+        return ubicacion;
+    }
+
+    public void setUbicacion(Ubicacion ubicacion) {
+        this.ubicacion = ubicacion;
     }
 
     public enum EstadoEvento {
