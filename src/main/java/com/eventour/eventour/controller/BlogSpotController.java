@@ -1,8 +1,11 @@
 package com.eventour.eventour.controller;
 
 import com.eventour.eventour.model.BlogSpot;
+import com.eventour.eventour.model.CategoriaEvento;
+import com.eventour.eventour.model.Evento;
 import com.eventour.eventour.repository.BlogSpotRepository;
 import com.eventour.eventour.service.BlogSpotService;
+import com.eventour.eventour.service.EventoService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,9 +15,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.List;
 
 @RestController
-@RequestMapping("/blogspots")
+@RequestMapping("/api/blogspots")
 public class BlogSpotController {
 
     @Autowired
@@ -23,14 +28,42 @@ public class BlogSpotController {
     @Autowired
     private BlogSpotRepository blogSpotRepository;
 
+    @Autowired
+    private EventoService eventoService;
+
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<BlogSpot> crearBlogSpot(
             @RequestParam String titulo,
             @RequestParam String contenido,
+            @RequestParam LocalDate fechaPublicacion,
+            @RequestParam Long eventoId,
+            @RequestParam String categoria,
             @RequestPart("imagen")MultipartFile imagen
             ) throws IOException{
-        BlogSpot nuevoBlog = blogSpotService.crearBlogSpot(titulo, contenido, imagen);
+        Evento evento = eventoService.obtenerEventoPorId(eventoId);
+        CategoriaEvento categoriaEvento = CategoriaEvento.valueOf(categoria);
+
+        BlogSpot nuevoBlog = blogSpotService.crearBlogSpot(
+                titulo,
+                contenido,
+                fechaPublicacion,
+                evento,
+                categoriaEvento,
+                imagen.getBytes()
+        );
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevoBlog);
+    }
+
+    // Actualizar BlogSpot
+    @PutMapping("/{id}")
+    public ResponseEntity<BlogSpot> actualizarBlogSpot(
+            @PathVariable Long id,
+            @RequestParam(required = false) String titulo,
+            @RequestParam(required = false) String contenido,
+            @RequestParam(required = false) MultipartFile imagen) throws IOException {
+
+        BlogSpot blogSpot = blogSpotService.actualizarBlogSpot(id, titulo, contenido, imagen);
+        return ResponseEntity.ok(blogSpot);
     }
 
     // Endpoint para obtener una imagen asociada a un BlogSpot
@@ -43,4 +76,18 @@ public class BlogSpotController {
                 .contentType(MediaType.IMAGE_JPEG) // Ajusta según el formato
                 .body(blogSpot.getImagen());
     }
+
+    // Buscar por categoría
+    @GetMapping("/categoria/{categoria}")
+    public ResponseEntity<List<BlogSpot>> buscarPorCategoria(@PathVariable CategoriaEvento categoria) {
+        List<BlogSpot> blogSpots = blogSpotService.buscarPorCategoria(categoria);
+        return ResponseEntity.ok(blogSpots);
+    }
+
+    @GetMapping("/titulo")
+    public ResponseEntity<List<BlogSpot>> buscarPorTitulo(@RequestParam String titulo) {
+        List<BlogSpot> blogSpots = blogSpotService.buscarPorTitulo(titulo);
+        return ResponseEntity.ok(blogSpots);
+    }
+
 }
