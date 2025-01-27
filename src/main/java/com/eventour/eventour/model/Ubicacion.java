@@ -1,5 +1,6 @@
 package com.eventour.eventour.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -29,6 +30,7 @@ public class Ubicacion {
 
     //Relacion con evento (una Ubicación puede tener muchos eventos)
     @OneToMany(mappedBy = "ubicacion", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Evento> eventos;
 
     public Ubicacion() {

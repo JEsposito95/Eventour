@@ -1,6 +1,8 @@
 package com.eventour.eventour.service;
 
 import com.eventour.eventour.model.BlogSpot;
+import com.eventour.eventour.model.CategoriaEvento;
+import com.eventour.eventour.model.Evento;
 import com.eventour.eventour.repository.BlogSpotRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,21 +19,27 @@ public class BlogSpotService {
     @Autowired
     private BlogSpotRepository blogSpotRepository;
 
-    public BlogSpot crearBlogSpot (String titulo, String contenido, MultipartFile imagen) {
-        BlogSpot blogSpot = new BlogSpot();
-        blogSpot.setTitulo(titulo);
-        blogSpot.setContenido(contenido);
-        blogSpot.setFechaPublicacion(LocalDate.now());
-
-        if ((imagen != null && !imagen.isEmpty())){
-            try {
-                blogSpot.setImagen(imagen.getBytes());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
+//    public BlogSpot crearBlogSpot (String titulo, String contenido, MultipartFile imagen) {
+//        BlogSpot blogSpot = new BlogSpot();
+//        blogSpot.setTitulo(titulo);
+//        blogSpot.setContenido(contenido);
+//        blogSpot.setFechaPublicacion(LocalDate.now());
+//
+//        if ((imagen != null && !imagen.isEmpty())){
+//            try {
+//                blogSpot.setImagen(imagen.getBytes());
+//            } catch (IOException e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
+//        return blogSpotRepository.save(blogSpot);
+//    }
+    public BlogSpot crearBlogSpot(String titulo, String contenido, LocalDate fechaPublicacion,
+                              Evento evento, CategoriaEvento categoria, byte[] imagen) {
+        BlogSpot blogSpot = new BlogSpot(null, titulo, contenido, fechaPublicacion, evento, categoria, imagen);
         return blogSpotRepository.save(blogSpot);
     }
+
 
     // Actualizar un BlogSpot existente
     public BlogSpot actualizarBlogSpot(Long id, String titulo, String contenido, MultipartFile imagen) throws IOException {
@@ -66,5 +74,15 @@ public class BlogSpotService {
     // Listar todos los BlogSpots
     public List<BlogSpot> listarBlogSpots() {
         return blogSpotRepository.findAll();
+    }
+
+    // Buscar por categoría
+    public List<BlogSpot> buscarPorCategoria(CategoriaEvento categoria) {
+        return blogSpotRepository.findByCategoria(categoria);
+    }
+
+    // Buscar por título (ignorando mayúsculas/minúsculas)
+    public List<BlogSpot> buscarPorTitulo(String titulo) {
+        return blogSpotRepository.findByTituloContainingIgnoreCase(titulo);
     }
 }

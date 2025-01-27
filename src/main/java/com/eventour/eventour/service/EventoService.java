@@ -25,6 +25,11 @@ public class EventoService {
         this.ubicacionRepository = ubicacionRepository;
 
     }
+    public Evento obtenerEventoPorId(Long eventoId){
+        return  eventoRepository.findById(eventoId)
+                .orElseThrow(() -> new RuntimeException("Evento no encontrado por ID: "+ eventoId));
+
+    }
 
     public List<EventoDTO> listarEventos() {
         List<Evento> eventos = eventoRepository.findAll();

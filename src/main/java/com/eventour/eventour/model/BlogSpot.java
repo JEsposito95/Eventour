@@ -21,6 +21,9 @@ public class BlogSpot {
     @ManyToOne
     private Evento evento;
 
+    @Enumerated(EnumType.STRING) // Almacena el valor como texto en la base de datos
+    private CategoriaEvento categoria;
+
     @Lob
     @Basic(fetch = FetchType.LAZY)
     private byte[] imagen; // Binario grande (almacenado como BLOB)
@@ -28,12 +31,13 @@ public class BlogSpot {
     public BlogSpot() {
     }
 
-    public BlogSpot(Long id, String titulo, String contenido, LocalDate fechaPublicacion, Evento evento, byte[] imagen) {
+    public BlogSpot(Long id, String titulo, String contenido, LocalDate fechaPublicacion, Evento evento,CategoriaEvento categoria, byte[] imagen) {
         this.id = id;
         this.titulo = titulo;
         this.contenido = contenido;
         this.fechaPublicacion = fechaPublicacion;
         this.evento = evento;
+        this.categoria = categoria;
         this.imagen = imagen;
     }
 
@@ -47,6 +51,14 @@ public class BlogSpot {
 
     public String getContenido() {
         return contenido;
+    }
+
+    public CategoriaEvento getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(CategoriaEvento categoria) {
+        this.categoria = categoria;
     }
 
     public void setContenido(String contenido) {
