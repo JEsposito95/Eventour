@@ -10,6 +10,11 @@ import java.util.List;
 
 public interface EventoRepository extends JpaRepository<Evento, Long> {
 
+    List<Evento> findByDestacadoTrue();
+
+    List<Evento> findByTituloContainingIgnoreCase(String titulo);
+
+
     @Query("SELECT e FROM Evento e WHERE LOWER(e.titulo) LIKE LOWER(CONCAT('%', :categoria, '%')) OR LOWER(e.descripcion) LIKE LOWER(CONCAT('%', :categoria, '%'))")
     List<Evento> findByCategoria(@Param("categoria") String categoria);
 

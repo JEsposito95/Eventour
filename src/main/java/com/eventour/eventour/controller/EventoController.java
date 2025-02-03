@@ -38,5 +38,16 @@ public class EventoController {
         return ResponseEntity.ok(nuevoEvento);
     }
 
+    @GetMapping("/destacados")
+    public ResponseEntity<List<EventoDTO>> obtenerEventosDestacados() {
+        return ResponseEntity.ok(eventoService.obtenerEventosDestacados());
+    }
+
+
     //AGREGAR LAS BUSQUEDAS PERSONALIZADAS POR NOMBRE POR EJ.
+    @GetMapping("/buscar")
+    public ResponseEntity<List<EventoDTO>> buscarEventos(@RequestParam String titulo) {
+        return ResponseEntity.ok(eventoService.buscarEventosPorNombre(titulo));
+    }
+
 }

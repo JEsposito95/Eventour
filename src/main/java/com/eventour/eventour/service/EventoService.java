@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EventoService {
@@ -30,6 +31,12 @@ public class EventoService {
                 .orElseThrow(() -> new RuntimeException("Evento no encontrado por ID: "+ eventoId));
 
     }
+
+    public List<EventoDTO> buscarEventosPorNombre(String titulo) {
+        List<Evento> eventos = eventoRepository.findByTituloContainingIgnoreCase(titulo);
+        return eventos.stream().map(this::mapToDTO).toList();
+    }
+
 
     public List<EventoDTO> listarEventos() {
         List<Evento> eventos = eventoRepository.findAll();
@@ -73,7 +80,7 @@ public class EventoService {
                 ubicacion,
                 eventoDTO.categoriaEvento()
         );
-
+    evento.setDestacado(eventoDTO.destacado());
         return eventoRepository.save(evento);
     }
 
@@ -88,6 +95,7 @@ public class EventoService {
         evento.setPrecio(eventoDTO.precio());
         evento.setImagen(eventoDTO.imagen());
         evento.setEstado(eventoDTO.estado());
+        evento.setDestacado(eventoDTO.destacado());
 
         if (evento.getUbicacion().getId() != eventoDTO.ubicacionId()) {
             Ubicacion ubicacion = ubicacionRepository.findById(eventoDTO.ubicacionId())
@@ -104,6 +112,12 @@ public class EventoService {
         }
         eventoRepository.deleteById(id);
     }
+
+    public List<EventoDTO> obtenerEventosDestacados() {
+        List<Evento> eventos = eventoRepository.findByDestacadoTrue();
+        return eventos.stream().map(this::mapToDTO).toList();
+    }
+
 
     private void validarEvento(EventoDTO eventoDTO) {
         if (eventoDTO.titulo() == null || eventoDTO.titulo().isBlank()) {
@@ -131,7 +145,8 @@ public class EventoService {
                 evento.getImagen(),
                 evento.getEstado(),
                 evento.getUbicacion().getId(),
-                evento.getCategoria()
+                evento.getCategoria(),
+                evento.isDestacado()
         );
     }
 }

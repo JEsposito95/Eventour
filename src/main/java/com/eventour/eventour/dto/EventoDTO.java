@@ -16,7 +16,8 @@ public record EventoDTO(
         String imagen,
         Evento.EstadoEvento estado,
         Long ubicacionId,
-        CategoriaEvento categoriaEvento
+        CategoriaEvento categoriaEvento,
+        boolean destacado
 
 ) {
 }
