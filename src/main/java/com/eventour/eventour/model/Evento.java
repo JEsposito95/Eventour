@@ -36,6 +36,10 @@ public class Evento {
     @Enumerated(EnumType.STRING)
     private CategoriaEvento categoria;
 
+    @Column(name = "destacado", nullable = false)
+    private boolean destacado = false;
+
+
     public Evento() {
     }
 
@@ -138,6 +142,14 @@ public class Evento {
     public void setUbicacion(Ubicacion ubicacion) {
         this.ubicacion = ubicacion;
     }
+    public boolean isDestacado() {
+        return destacado;
+    }
+
+    public void setDestacado(boolean destacado) {
+        this.destacado = destacado;
+    }
+
 
     public enum EstadoEvento {
         ACTIVO,
