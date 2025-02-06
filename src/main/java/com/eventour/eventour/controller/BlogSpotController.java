@@ -66,6 +66,20 @@ public class BlogSpotController {
         return ResponseEntity.ok(blogSpot);
     }
 
+    // Obtener un BlogSpot por ID
+    @GetMapping("/{id}")
+    public ResponseEntity<BlogSpot> obtenerBlogSpotPorId(@PathVariable Long id) {
+        BlogSpot blogSpot = blogSpotService.obtenerBlogSpotPorId(id);
+        return ResponseEntity.ok(blogSpot);
+    }
+
+    // Listar todos los BlogSpots
+    @GetMapping
+    public ResponseEntity<List<BlogSpot>> listarBlogSpots() {
+        List<BlogSpot> blogSpots = blogSpotService.listarBlogSpots();
+        return ResponseEntity.ok(blogSpots);
+    }
+
     // Endpoint para obtener una imagen asociada a un BlogSpot
     @GetMapping("/{id}/imagen")
     public ResponseEntity<byte[]> obtenerImagen(@PathVariable Long id) {
@@ -89,5 +103,12 @@ public class BlogSpotController {
         List<BlogSpot> blogSpots = blogSpotService.buscarPorTitulo(titulo);
         return ResponseEntity.ok(blogSpots);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminarBlogSpot(@PathVariable Long id) {
+        blogSpotService.eliminarBlogSpot(id);
+        return ResponseEntity.noContent().build();
+    }
+
 
 }
