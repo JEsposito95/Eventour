@@ -85,4 +85,8 @@ public class BlogSpotService {
     public List<BlogSpot> buscarPorTitulo(String titulo) {
         return blogSpotRepository.findByTituloContainingIgnoreCase(titulo);
     }
+
+
+
+
 }
